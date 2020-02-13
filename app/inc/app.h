@@ -15,6 +15,7 @@
 typedef struct __app_context
 {
 	// hardware handles
+	void * uartHandle;
 
 	// mutex IDs
 	osMutexId uartMutexId;
@@ -37,6 +38,8 @@ typedef enum
 	APP_ERR_NULL_REF,
 	APP_ERR_OS
 } app_err_t;
+
+extern app_context_t globalAppContext;
 
 #define APP_MAIN_THREAD_STACK_SIZE		128
 #define APP_UI_THREAD_STACK_SIZE		128

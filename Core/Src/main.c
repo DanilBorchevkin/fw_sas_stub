@@ -309,7 +309,7 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-  APP_Init(NULL);
+  APP_Init((void *) &huart1);
   /* Infinite loop */
   osThreadTerminate(NULL);
   /* USER CODE END 5 */ 

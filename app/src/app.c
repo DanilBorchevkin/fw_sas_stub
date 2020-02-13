@@ -21,13 +21,16 @@
 // Queue for UART transmit
 // Mutex for UART
 
-static app_context_t __appContext;
+app_context_t globalAppContext;
 
 app_err_t APP_Init(void * uartHandle)
 {
 
 	app_context_t * appContext = APP_ContextGetForUpdate();
 	APP_IF_RETURN(appContext == NULL, APP_ERR_NULL_REF);
+
+	// Assing handles
+	appContext->uartHandle = uartHandle;
 
 	// Mutexes
 	osMutexDef(uart_mutex);
@@ -53,16 +56,17 @@ app_err_t APP_Init(void * uartHandle)
 	osThreadDef(uartTxTask, APP_UART_TxTask, APP_UART_TX_THREAD_PRIO, 1, APP_UART_TX_THREAD_STACK_SIZE);
 	appContext->uartTxThreadId = osThreadCreate(osThread(uartTxTask), NULL);
 
+	return APP_ERR_OK;
 }
 
 const app_context_t * APP_ContextGet(void)
 {
-	return (const app_context_t *) &__appContext;
+	return (const app_context_t *) &globalAppContext;
 }
 
 app_context_t * APP_ContextGetForUpdate(void)
 {
-	return &__appContext;
+	return &globalAppContext;
 }
 
 void APP_MainTask(const void * argument)
